@@ -2,20 +2,50 @@
 // provieder ✅
 // consumer(eliminate) => useContext Hook
 
-import {createContext, useContext} from "react";
+import { createContext, useContext, useReducer, useEffect } from "react";
+import reducer from "./reducer";
+let API = "http://hn.algolia.com/api/v1/search?";
 
+const initialState = {
+  isLoading: true,
+  query: "CSS",
+  nbPages: 0,
+  page: 0,
+  hits: [],
+};
 
-const AppContext = createContext()
+const AppContext = createContext();
 
-const AppProvider = ({children}) => {
-    return(
-    <AppContext.Provider value={"...."}>
-        {children}
-    </AppContext.Provider>
-    )
-}
+const AppProvider = ({ children }) => {
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const fetchApiData = async (url) => {
+    dispatch({
+      type: "SET_LOADING",
+    });
 
-const useGlobalContext = () =>{
-    return useContext(AppContext)   
-}
-export {AppContext , AppProvider, useGlobalContext};
+    try {
+      const res = await fetch(url);
+      const data = await res.json();
+      console.log(data);
+      dispatch({
+        type: "GET_STORIES",
+        payload: {
+          hits: data.hits,
+        },
+      });
+    } catch {
+      console.log("error", error);
+    }
+  };
+  useEffect(() => {
+    fetchApiData(`${API}query=${state.query}&page=${state.page}`);
+  }, []);
+  return (
+    <AppContext.Provider value={{ ...state }}>{children}</AppContext.Provider>
+  );
+};
+
+const useGlobalContext = () => {
+  return useContext(AppContext);
+};
+export { AppContext, AppProvider, useGlobalContext };
