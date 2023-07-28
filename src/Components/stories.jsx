@@ -1,27 +1,42 @@
 import React from "react";
-import { useGlobalContext } from "./context";
-
+import { useGlobalContext } from "../Provider/context";
 
 const stories = () => {
-const {hits, isLoading} = useGlobalContext();
+  const { hits, isLoading } = useGlobalContext();
 
-if(isLoading) {
+  if (isLoading) {
+    return (
+      <>
+        <h1>Loading.....</h1>
+      </>
+    );
+  }
+
   return (
     <>
-    <h1>Loading.....</h1>
-    </>
-  )
-}
-
-
-  return (
-    <>
-      <h2>My Tech News Post</h2>
+      <div className="stories-div">
       {hits.map((curPost) => {
-        return <h2>
-          {curPost.title}
-        </h2>
+        const {title, author, objectID, url , num_comments} = curPost;
+        return(
+          <>
+          <div className="card" key={objectID}>
+            <h2>{title}</h2>
+            <p>
+              By <span>{author}</span> | <span>{num_comments}</span> comments
+            </p>
+            <div className="card-button">
+               <a href={url} target="_blank">
+                Read More
+               </a>
+               <a href='#'>
+                Remove
+               </a>
+            </div>
+          </div>
+          </>
+        )
       })}
+      </div>
     </>
   );
 };
