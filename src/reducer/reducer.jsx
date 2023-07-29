@@ -12,6 +12,14 @@ const reducer = (state, action) => {
         isLoading: false,
         // nbpages : action.payload.nbpages
       };
+    case "REMOVE_POST":
+      return{
+        ...state,
+        hits: state.hits.filter((curElem) => 
+          curElem.objectID !== action.payload
+        )
+      }
+  
   }
   return state;
 };
