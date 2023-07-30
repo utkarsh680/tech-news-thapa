@@ -2,7 +2,7 @@ import React from "react";
 import { useGlobalContext } from "../Provider/context";
 
 const stories = () => {
-  const { hits, isLoading, removePost } = useGlobalContext();
+  const { hits, isLoading, removePost} = useGlobalContext();
 
   if (isLoading) {
     return (
@@ -28,7 +28,7 @@ const stories = () => {
                <a href={url} target="_blank">
                 Read More
                </a>
-               <a href='#' onClick={() => removePost(objectID)}>
+               <a href='#' onClick={() => {removePost(objectID)}}>
                 Remove
                </a>
             </div>

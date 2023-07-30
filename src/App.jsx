@@ -7,8 +7,8 @@ function App() {
   return (
     <>
     {/* <h1>hello My name is Utkarsh singh</h1> */}
-      {/* <Pagination/>
-      <Search /> */}
+      {/* <Pagination/> */}
+      <Search />
       <Stories />
     </>
   )
