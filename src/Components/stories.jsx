@@ -13,7 +13,7 @@ const stories = () => {
   }
 
   return (
-    <>
+   
       <div className="stories-div">
       {hits.map((curPost) => {
         const {title, author, objectID, url , num_comments} = curPost;
@@ -37,7 +37,6 @@ const stories = () => {
         )
       })}
       </div>
-    </>
   );
 };
 

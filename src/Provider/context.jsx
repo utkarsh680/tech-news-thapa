@@ -4,6 +4,7 @@
 
 import { createContext, useContext, useReducer, useEffect } from "react";
 import reducer from "../reducer/reducer";
+import pagination from "../Components/pagination";
 let API = "http://hn.algolia.com/api/v1/search?";
 
 const initialState = {
@@ -30,7 +31,8 @@ const AppProvider = ({ children }) => {
       dispatch({
         type: "GET_STORIES",
         payload: {
-          hits: data.hits,
+        hits: data.hits,
+        nbPages: data.nbPages
         },
       });
     } catch {
@@ -55,11 +57,25 @@ const AppProvider = ({ children }) => {
   });
  }
 
+//  pagination
+
+const getNextPage = () =>{
+  dispatch({
+    type: "NEXT_PAGE",
+  })
+}
+
+const getPrevPage = () =>{
+  dispatch({
+    type: "PREV_PAGE",
+  })
+}
+
   useEffect(() => {
     fetchApiData(`${API}query=${state.query}&page=${state.page}`);
-  }, [state.query]);
+  }, [state.query,state.page]);
   return (
-    <AppContext.Provider value={{ ...state, removePost, searchPost}}>
+    <AppContext.Provider value={{ ...state, removePost, searchPost,getNextPage, getPrevPage}}>
       {children}
     </AppContext.Provider>
   );
@@ -68,4 +84,4 @@ const AppProvider = ({ children }) => {
 const useGlobalContext = () => {
   return useContext(AppContext);
 };
-export { AppContext, AppProvider, useGlobalContext };
+export { AppContext, AppProvider, useGlobalContext};
